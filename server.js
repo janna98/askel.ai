@@ -1,8 +1,7 @@
 import {createRequestHandler} from "@remix-run/express";
 import express from "express";
-import * as path from "path";
 
-const setup = async () => {
+const setupServer = async () => {
     const viteDevServer =
         process.env.NODE_ENV === "production"
             ? null
@@ -33,13 +32,7 @@ const setup = async () => {
     });
 }
 
-const setupRootDir = async () => {
-    const __dirname = path.resolve(path.dirname(''));
-    global.appRoot = path.resolve(__dirname);
-}
-
-await setup();
-await setupRootDir();
+await setupServer();
 
 //const csvPath = __dirname + '/files/employee_data.csv';
 
