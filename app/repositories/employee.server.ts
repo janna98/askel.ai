@@ -11,15 +11,25 @@ export function findEmployees() {
     })
 }
 
-export function createEmployee(name: string, department: string, performanceReview: string) {
+interface EmployeeCreate {
+    name: string;
+    department: string;
+    performanceReview: string;
+}
+
+export function upsertEmployee(data: EmployeeCreate) {
     return db.$transaction(async (tx) => {
-        return await tx.employee.create({
+        return await tx.employee.upsert({
             select: {id: true},
-            data: {
-                name: name,
-                department: department,
-                performanceReview: performanceReview,
-            }
+            where: {
+                name: data.name,
+            },
+            update: {
+                ...data,
+            },
+            create: {
+                ...data,
+            },
         });
     });
 }
