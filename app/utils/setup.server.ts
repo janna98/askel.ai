@@ -2,7 +2,7 @@ import {approot} from "../../approot";
 import {parseCsv} from "~/utils/parser.server";
 import {getUniques} from "~/utils/array.server";
 import {findEmployees, upsertEmployee} from "~/repositories/employee.server";
-import {ai} from "~/utils/openai.server";
+import {ai, embeddingType} from "~/utils/openai.server";
 import {findEmbeddings, upsertEmbedding} from "~/repositories/embedding.server";
 
 export async function setupEmployees() {
@@ -54,7 +54,7 @@ async function getEmbeddings() {
     for (const employee of employees) {
         const text = `Name: ${employee.name}, Department: ${employee.department}, Performance review: ${employee.performanceReview}`
         const embedding = await ai.embeddings.create({
-            model: "text-embedding-3-small",
+            model: embeddingType,
             input: text,
             encoding_format: "float",
         });
