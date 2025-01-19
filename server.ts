@@ -1,10 +1,7 @@
 import {createRequestHandler} from "@remix-run/express";
-import {parseCsv} from "~/utils/parser.server";
-import {upsertEmployee} from "./app/repositories/employee.server";
-import {getUniques} from "~/utils/array.server";
-import {approot} from "./approot";
 import express from "express";
 import {ServerBuild} from "@remix-run/node";
+import {setupEmployees} from "~/utils/setup.server";
 
 const setupServer = async () => {
     const viteDevServer =
@@ -42,23 +39,6 @@ const setupServer = async () => {
     app.listen(3000, () => {
         console.log("App listening on http://localhost:3000");
     });
-}
-
-async function setupEmployees() {
-    const filePath = approot + "/files/employee_data.csv";
-
-    const headers = ['Name', 'Department', 'Performance review'];
-    let employees = await parseCsv(filePath, headers);
-
-    employees = getUniques(employees, 'Name');
-
-    for (const employee of employees) {
-        await upsertEmployee({
-            name: employee['Name'],
-            department: employee['Department'],
-            performanceReview: employee['Performance review']
-        });
-    }
 }
 
 await setupServer();
