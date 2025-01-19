@@ -6,7 +6,7 @@ import {ai, embeddingType} from "~/utils/openai.server";
 import {findEmbeddings, upsertEmbedding} from "~/repositories/embedding.server";
 
 export async function setupEmployees() {
-    console.log("Retrieving employee dataset")
+    console.log("Retrieving employee dataset...")
     const filePath = approot + "/files/employee_data.csv";
 
     const headers = ['Name', 'Department', 'Performance review'];
@@ -48,7 +48,7 @@ async function getEmbeddings() {
         return;
     }
 
-    console.log("Creating dataset embeddings")
+    console.log("Creating dataset embeddings... This can take a while...")
     const employees = await findEmployees();
 
     for (const employee of employees) {
